@@ -25,17 +25,17 @@
   --shadow-md: 0 4px 12px rgba(0,0,0,.06);
   --transition: 0.18s cubic-bezier(.4,0,.2,1);
 }
-
+ 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: var(--font-body); color: var(--slate-800); background: var(--slate-50); line-height: 1.55; -webkit-font-smoothing: antialiased; }
-
+ 
 /* ── APP SHELL ── */
 .app { max-width: 940px; margin: 0 auto; padding: 20px 16px 80px; }
 .app-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
 .app-title { font-size: 22px; font-weight: 700; color: var(--slate-900); letter-spacing: -.3px; }
 .app-subtitle { font-size: 13px; color: var(--slate-400); margin-top: 3px; }
 .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-
+ 
 /* ── BUTTONS ── */
 .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; border: 1.5px solid var(--slate-200); background: #fff; color: var(--slate-600); font-size: 12px; font-weight: 500; font-family: var(--font-body); cursor: pointer; transition: all var(--transition); white-space: nowrap; }
 .btn:hover { border-color: var(--slate-300); background: var(--slate-50); }
@@ -43,13 +43,13 @@ body { font-family: var(--font-body); color: var(--slate-800); background: var(-
 .btn-primary { background: var(--blue-600); color: #fff; border-color: var(--blue-600); font-weight: 600; padding: 10px 24px; font-size: 14px; }
 .btn-primary:hover { background: var(--blue-500); }
 .btn-primary:disabled { background: var(--slate-300); border-color: var(--slate-300); cursor: wait; }
-
+ 
 /* ── INPUT GRID ── */
 .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
 .input-grid label { font-size: 11px; font-weight: 600; color: var(--slate-500); text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 4px; }
 .input-grid input { width: 100%; padding: 9px 13px; border-radius: 8px; border: 1.5px solid var(--slate-200); font-size: 14px; font-family: var(--font-body); background: #fff; color: var(--slate-800); outline: none; transition: border var(--transition); }
 .input-grid input:focus { border-color: var(--blue-500); }
-
+ 
 /* ── GAUGE ── */
 .gauge { background: linear-gradient(135deg, var(--slate-900) 0%, #1a2744 100%); border-radius: 16px; padding: 26px 30px; color: #fff; margin-bottom: 24px; }
 .gauge-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
@@ -61,7 +61,7 @@ body { font-family: var(--font-body); color: var(--slate-800); background: var(-
 .gauge-stat-label { font-size: 10px; opacity: .45; margin-top: 2px; }
 .gauge-bar { margin-top: 18px; height: 7px; border-radius: 4px; background: rgba(255,255,255,.1); overflow: hidden; display: flex; }
 .gauge-bar div { transition: width .5s ease; }
-
+ 
 /* ── AREA ACCORDION ── */
 .area { margin-bottom: 10px; border-radius: var(--radius); border: 1px solid var(--slate-200); overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); }
 .area-header { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background var(--transition); }
@@ -74,7 +74,7 @@ body { font-family: var(--font-body); color: var(--slate-800); background: var(-
 .area-chevron { color: var(--slate-400); font-size: 18px; transition: transform var(--transition); }
 .area-chevron.open { transform: rotate(180deg); }
 .area-body { padding: 4px 18px 18px; }
-
+ 
 /* ── CONTROL CARD ── */
 .ctrl { padding: 12px 14px; border-radius: 8px; border: 1px solid var(--slate-100); margin-bottom: 7px; transition: all var(--transition); }
 .ctrl.active-green { border-color: var(--green-200); background: rgba(240,253,244,.45); }
@@ -91,7 +91,7 @@ body { font-family: var(--font-body); color: var(--slate-800); background: var(-
 .ctrl-desc { font-size: 12px; color: var(--slate-500); line-height: 1.5; }
 .ctrl-note-display { margin-top: 6px; font-size: 12px; color: var(--indigo-500); font-style: italic; background: var(--indigo-50); padding: 4px 8px; border-radius: 6px; }
 .ctrl-actions { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
-
+ 
 /* ── STATUS TOGGLE BUTTONS ── */
 .status-btn { padding: 5px 12px; border-radius: 7px; border: 1.5px solid var(--slate-200); background: transparent; color: var(--slate-400); font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--font-body); transition: all var(--transition); }
 .status-btn:hover { border-color: var(--slate-300); }
@@ -102,29 +102,29 @@ body { font-family: var(--font-body); color: var(--slate-800); background: var(-
 .note-btn.has-note { background: var(--indigo-50); border-color: var(--indigo-500); color: var(--indigo-500); }
 .note-textarea { width: 100%; margin-top: 10px; padding: 8px 12px; border-radius: 8px; border: 1.5px solid var(--slate-200); font-size: 13px; font-family: var(--font-body); resize: vertical; outline: none; color: var(--slate-700); }
 .note-textarea:focus { border-color: var(--blue-500); }
-
+ 
 /* ── BADGE ── */
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 .badge-green { background: var(--green-100); color: var(--green-700); }
 .badge-yellow { background: var(--yellow-100); color: var(--yellow-600); }
 .badge-red { background: var(--red-100); color: var(--red-700); }
-
+ 
 /* ── EXPORT BAR ── */
 .export-bar { margin-top: 28px; padding: 20px 24px; border-radius: 14px; background: linear-gradient(135deg, var(--slate-900), #1a2744); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .export-bar-text { color: #fff; }
 .export-bar-title { font-weight: 600; font-size: 15px; }
 .export-bar-sub { font-size: 12px; opacity: .5; margin-top: 3px; }
-
+ 
 /* ── REPORT VIEW (overlay) ── */
 .report-overlay { position: fixed; inset: 0; z-index: 1000; background: var(--slate-100); overflow-y: auto; }
 .report-toolbar { position: sticky; top: 0; z-index: 10; background: var(--slate-900); color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .report-toolbar .btn { color: #fff; border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.08); }
 .report-toolbar .btn:hover { background: rgba(255,255,255,.15); }
 .report-container { max-width: 820px; margin: 24px auto; background: #fff; box-shadow: 0 2px 24px rgba(0,0,0,.1); border-radius: 4px; }
-
+ 
 /* ── PRINT REPORT STYLES ── */
 .report-page { padding: 52px 56px; position: relative; }
-.report-page + .report-page { border-top: 2px dashed var(--slate-200); }
+.report-page + .report-page { border-top: none; }
 .report-header-bar { height: 4px; background: linear-gradient(90deg, var(--slate-900) 0%, var(--blue-500) 50%, var(--slate-900) 100%); margin: -52px -56px 28px; }
 .report h1 { font-size: 26px; font-weight: 700; color: var(--slate-900); letter-spacing: -.3px; }
 .report h2 { font-size: 19px; font-weight: 600; color: var(--slate-900); margin-bottom: 14px; padding-bottom: 7px; border-bottom: 2px solid var(--slate-200); }
@@ -153,15 +153,22 @@ body { font-family: var(--font-body); color: var(--slate-800); background: var(-
 .report .scope-box ul { font-size: 13px; color: var(--slate-600); padding-left: 20px; line-height: 1.8; }
 .report .footer-line { display: flex; justify-content: space-between; font-size: 10px; color: var(--slate-400); border-top: 1px solid var(--slate-200); padding-top: 10px; margin-top: 32px; }
 .report .cta-box { margin-top: 36px; padding: 20px; background: linear-gradient(135deg, var(--slate-900), #1a2744); border-radius: 12px; color: #fff; }
-
+ 
 @media print {
-  body { background: #fff; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  body { background: #fff !important; margin: 0; padding: 0; }
+  .app { display: none !important; }
   .report-toolbar { display: none !important; }
-  .report-container { box-shadow: none; margin: 0; max-width: none; border-radius: 0; }
-  .report-page { page-break-after: always; min-height: 100vh; padding: 44px 48px; }
-  .report-page:last-child { page-break-after: auto; }
+  .report-overlay { position: static !important; overflow: visible !important; background: #fff !important; }
+  .report-container { box-shadow: none !important; margin: 0 !important; max-width: none !important; border-radius: 0 !important; }
+  .report-page { page-break-after: always !important; break-after: page !important; min-height: auto; padding: 40px 48px; page-break-inside: avoid; }
+  .report-page:last-child { page-break-after: auto !important; break-after: auto !important; }
+  .report-header-bar { -webkit-print-color-adjust: exact; }
+  .risk-box, .stat-card, .finding, .finding-yellow, .scope-box, .cta-box, .badge { -webkit-print-color-adjust: exact; }
+  table { page-break-inside: avoid; }
+  .finding { page-break-inside: avoid; }
 }
-
+ 
 @media (max-width: 600px) {
   .input-grid { grid-template-columns: 1fr; }
   .ctrl-top { flex-direction: column; }
@@ -173,9 +180,9 @@ body { font-family: var(--font-body); color: var(--slate-800); background: var(-
 </style>
 </head>
 <body>
-
+ 
 <div id="app"></div>
-
+ 
 <script>
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // DATA
@@ -217,16 +224,16 @@ const AREAS = [
     {id:"C25",cis:"6.5.4",title:"SMTP AUTH disabilitato",desc:"L'autenticazione SMTP è disabilitata per prevenire abusi di invio email",severity:"high"},
   ]},
 ];
-
+ 
 const STATUS = {
   green:  {label:"Conforme",      color:"var(--green-600)",  bg:"var(--green-50)",  border:"var(--green-200)", emoji:"🟢"},
   yellow: {label:"Parziale",      color:"var(--yellow-600)", bg:"var(--yellow-50)", border:"var(--yellow-200)",emoji:"🟡"},
   red:    {label:"Non conforme",  color:"var(--red-600)",    bg:"var(--red-50)",    border:"var(--red-200)",   emoji:"🔴"},
   gray:   {label:"Non valutato",  color:"var(--slate-400)",  bg:"var(--slate-50)",  border:"var(--slate-200)", emoji:"⚪"},
 };
-
+ 
 const SEV = {critical:"Critico", high:"Alto"};
-
+ 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // STATE
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -239,10 +246,10 @@ let state = {
   noteOpen: null,
   showReport: false,
 };
-
+ 
 function save() { try { localStorage.setItem("m365_state", JSON.stringify(state)); } catch(e){} }
 function load() { try { const s = localStorage.getItem("m365_state"); if(s) { const p = JSON.parse(s); Object.assign(state, p); state.showReport = false; } } catch(e){} }
-
+ 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // SCORING
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -255,7 +262,7 @@ function getAreaScore(controls) {
   if(g >= ev.length*.7) return "green";
   return "yellow";
 }
-
+ 
 function getOverall() {
   const all = AREAS.flatMap(a=>a.controls);
   const ev = all.filter(c => state.results[c.id] && state.results[c.id]!=="gray");
@@ -267,7 +274,7 @@ function getOverall() {
   if(pct>=.5 && r<=ev.length*.3) return {level:"yellow",label:"MEDIO RISCHIO"};
   return {level:"red",label:"ALTO RISCHIO"};
 }
-
+ 
 function counts() {
   const all = AREAS.flatMap(a=>a.controls);
   return {
@@ -278,16 +285,16 @@ function counts() {
     red: all.filter(c=>state.results[c.id]==="red").length,
   };
 }
-
+ 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // RENDER — ASSESSMENT VIEW
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function render() {
   const c = counts();
   const overall = getOverall();
-
+ 
   const gaugeColor = lev => lev==="green"?"var(--green-500)":lev==="yellow"?"var(--yellow-500)":"#f87171";
-
+ 
   let html = `
   <div class="app">
     <div class="app-header">
@@ -300,12 +307,12 @@ function render() {
         <button class="btn" onclick="setAll('gray')">↺ Reset</button>
       </div>
     </div>
-
+ 
     <div class="input-grid">
       <div><label>Nome cliente</label><input type="text" value="${esc(state.clientName)}" placeholder="Es. Acme S.r.l." oninput="state.clientName=this.value;save()"></div>
       <div><label>Data assessment</label><input type="date" value="${state.assessDate}" oninput="state.assessDate=this.value;save()"></div>
     </div>
-
+ 
     <div class="gauge">
       <div class="gauge-top">
         <div>
@@ -325,14 +332,14 @@ function render() {
         <div style="width:${(c.red/c.total*100)}%;background:#f87171"></div>
       </div>
     </div>`;
-
+ 
   // Areas
   for(const area of AREAS) {
     const score = getAreaScore(area.controls);
     const done = area.controls.filter(c=>state.results[c.id]&&state.results[c.id]!=="gray").length;
     const isOpen = state.expandedArea === area.id;
     const badgeHtml = score ? `<span class="badge badge-${score}">${STATUS[score].emoji} ${score==="green"?"Adeguata":score==="yellow"?"Migliorabile":"Critico"}</span>` : '<span style="font-size:12px;color:var(--slate-400)">–</span>';
-
+ 
     html += `<div class="area">
       <div class="area-header" onclick="toggleArea('${area.id}')">
         <div class="area-left">
@@ -341,7 +348,7 @@ function render() {
         </div>
         <div class="area-right">${badgeHtml}<span class="area-chevron ${isOpen?'open':''}">▾</span></div>
       </div>`;
-
+ 
     if(isOpen) {
       html += '<div class="area-body">';
       for(const ctrl of area.controls) {
@@ -370,7 +377,7 @@ function render() {
     }
     html += '</div>';
   }
-
+ 
   // Export bar
   html += `
     <div class="export-bar">
@@ -381,10 +388,10 @@ function render() {
       <button class="btn btn-primary" onclick="showReport()">📄 Visualizza Report</button>
     </div>
   </div>`;
-
+ 
   document.getElementById("app").innerHTML = html;
 }
-
+ 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // RENDER — REPORT VIEW
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -395,12 +402,12 @@ function renderReport() {
   const yellowFindings = AREAS.flatMap(a=>a.controls.filter(x=>state.results[x.id]==="yellow")).slice(0,5);
   const client = state.clientName || "[Nome Cliente]";
   const date = state.assessDate || new Date().toLocaleDateString("it-IT");
-
+ 
   const riskClass = overall ? "risk-"+overall.level : "risk-yellow";
   const riskEmoji = overall ? STATUS[overall.level].emoji : "⚪";
   const riskLabel = overall ? overall.label : "NON VALUTATO";
   const riskColor = overall ? STATUS[overall.level].color : "var(--slate-400)";
-
+ 
   let html = `
   <div class="report-overlay">
     <div class="report-toolbar">
@@ -411,9 +418,9 @@ function renderReport() {
         <button class="btn" onclick="closeReport()">✕ Chiudi</button>
       </div>
     </div>
-
+ 
     <div class="report-container report">
-
+ 
       <!-- PAGE 1 -->
       <div class="report-page">
         <div class="report-header-bar"></div>
@@ -424,14 +431,14 @@ function renderReport() {
           <tr><td style="font-weight:600;padding-right:32px;border:none">Data</td><td style="border:none">${date}</td></tr>
           <tr><td style="font-weight:600;padding-right:32px;border:none">A cura di</td><td style="border:none">Lanpartners</td></tr>
         </table>
-
+ 
         <h2>Executive Summary</h2>
         <p style="font-size:13px;color:var(--slate-600);margin-bottom:14px">
           Questa valutazione fornisce una visione sintetica dello stato di sicurezza del tenant Microsoft 365,
           evidenziando le principali aree di rischio basate su <strong>${c.evaluated}</strong> controlli valutati su 25 totali,
           mappati sul CIS Microsoft 365 Foundations Benchmark v6.0.1.
         </p>
-
+ 
         <div class="risk-box ${riskClass}">
           <span style="font-size:30px">${riskEmoji}</span>
           <div>
@@ -439,14 +446,14 @@ function renderReport() {
             <div class="risk-label" style="color:${riskColor}">${riskLabel}</div>
           </div>
         </div>
-
+ 
         <div class="stat-grid">
           <div class="stat-card"><div class="stat-number" style="color:var(--green-600)">${c.green}</div><div class="stat-sub">Conformi</div></div>
           <div class="stat-card"><div class="stat-number" style="color:var(--yellow-600)">${c.yellow}</div><div class="stat-sub">Parziali</div></div>
           <div class="stat-card"><div class="stat-number" style="color:var(--red-600)">${c.red}</div><div class="stat-sub">Non conformi</div></div>
           <div class="stat-card"><div class="stat-number" style="color:var(--blue-600)">${c.evaluated}<span style="font-size:13px;color:var(--slate-400)">/${c.total}</span></div><div class="stat-sub">Valutati</div></div>
         </div>
-
+ 
         <h3>Panoramica per area</h3>
         <table>
           <thead><tr><th>Area</th><th>Controlli</th><th>Stato</th></tr></thead>
@@ -460,7 +467,7 @@ function renderReport() {
         </table>
         <div class="footer-line"><span>Documento confidenziale</span><span>Pagina 1 / 4</span></div>
       </div>
-
+ 
       <!-- PAGE 2 -->
       <div class="report-page">
         <div class="report-header-bar"></div>
@@ -483,7 +490,7 @@ function renderReport() {
         `).join('')}
         <div class="footer-line"><span>Documento confidenziale</span><span>Pagina 2 / 4</span></div>
       </div>
-
+ 
       <!-- PAGE 3 -->
       <div class="report-page">
         <div class="report-header-bar"></div>
@@ -494,14 +501,14 @@ function renderReport() {
             <div class="finding-desc">${cf.desc}</div>
             ${state.notes[cf.id]?`<div class="finding-note">Nota: ${esc(state.notes[cf.id])}</div>`:''}
           </div>`).join('')}` : '<p style="color:var(--slate-500)">Nessuna criticità grave riscontrata.</p>'}
-
+ 
         ${yellowFindings.length ? `<h3 style="margin-top:20px">Aree di miglioramento</h3>${yellowFindings.map(yf => `
           <div class="finding finding-yellow">
             <div class="finding-title">${yf.title} <span style="font-size:11px;color:var(--slate-400)">(CIS ${yf.cis})</span></div>
             <div class="finding-desc">${yf.desc}</div>
             ${state.notes[yf.id]?`<div class="finding-note">Nota: ${esc(state.notes[yf.id])}</div>`:''}
           </div>`).join('')}` : ''}
-
+ 
         <h2 style="margin-top:28px">Ambito dell'assessment</h2>
         <div class="scope-grid">
           <div class="scope-box" style="background:var(--green-50)">
@@ -515,7 +522,7 @@ function renderReport() {
         </div>
         <div class="footer-line"><span>Documento confidenziale</span><span>Pagina 3 / 4</span></div>
       </div>
-
+ 
       <!-- PAGE 4 -->
       <div class="report-page">
         <div class="report-header-bar"></div>
@@ -548,15 +555,15 @@ function renderReport() {
       </div>
     </div>
   </div>`;
-
+ 
   document.getElementById("app").innerHTML = html;
 }
-
+ 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ACTIONS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function esc(s) { if(!s) return ""; return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-
+ 
 function setStatus(id, s) {
   state.results[id] = state.results[id]===s ? "gray" : s;
   save(); render();
@@ -584,36 +591,32 @@ function closeReport() {
 function printReport() {
   window.print();
 }
-
+ 
 function downloadReportHTML() {
   // Build a standalone HTML file from the report content
   const reportEl = document.querySelector('.report-container');
   if (!reportEl) return;
-
+ 
   const styles = document.querySelector('style').textContent;
   const fontLink = '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">';
   const client = state.clientName || "Cliente";
   const date = state.assessDate || "";
-
+ 
   const fullHTML = `<!DOCTYPE html>
 <html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>M365 Security Assessment - ${client}</title>
 ${fontLink}
 <style>${styles}
 body { background: #fff; }
+.report-overlay { position: static; overflow: visible; background: #fff; }
 .report-container { max-width: 820px; margin: 0 auto; box-shadow: none; }
-@media print {
-  .report-page { page-break-after: always; min-height: 100vh; padding: 44px 48px; }
-  .report-page:last-child { page-break-after: auto; }
-  .no-print { display: none !important; }
-}
 </style></head><body>
 <div style="text-align:center;padding:12px;background:#0f172a;color:#fff;" class="no-print">
   <button onclick="window.print()" style="padding:10px 28px;border-radius:8px;border:none;background:#3b82f6;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif">🖨 Stampa / Salva come PDF</button>
 </div>
 ${reportEl.outerHTML}
 </body></html>`;
-
+ 
   const blob = new Blob([fullHTML], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -624,7 +627,7 @@ ${reportEl.outerHTML}
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
-
+ 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // INIT
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
