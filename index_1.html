@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 Security Assessment — Lanpartners</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1; --slate-400: #94a3b8; --slate-500: #64748b;
+  --slate-600: #475569; --slate-700: #334155; --slate-800: #1e293b; --slate-900: #0f172a;
+  --green-500: #22c55e; --green-600: #16a34a; --green-700: #15803d;
+  --green-50: #f0fdf4; --green-100: #dcfce7; --green-200: #bbf7d0;
+  --yellow-500: #eab308; --yellow-600: #ca8a04;
+  --yellow-50: #fefce8; --yellow-100: #fef9c3; --yellow-200: #fde68a;
+  --red-500: #ef4444; --red-600: #dc2626; --red-700: #b91c1c;
+  --red-50: #fef2f2; --red-100: #fee2e2; --red-200: #fecaca;
+  --blue-500: #3b82f6; --blue-600: #2563eb;
+  --indigo-50: #eef2ff; --indigo-500: #6366f1;
+  --radius: 10px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.06);
+  --transition: 0.18s cubic-bezier(.4,0,.2,1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-body); color: var(--slate-800); background: var(--slate-50); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+/* ── APP SHELL ── */
+.app { max-width: 940px; margin: 0 auto; padding: 20px 16px 80px; }
+.app-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+.app-title { font-size: 22px; font-weight: 700; color: var(--slate-900); letter-spacing: -.3px; }
+.app-subtitle { font-size: 13px; color: var(--slate-400); margin-top: 3px; }
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; border: 1.5px solid var(--slate-200); background: #fff; color: var(--slate-600); font-size: 12px; font-weight: 500; font-family: var(--font-body); cursor: pointer; transition: all var(--transition); white-space: nowrap; }
+.btn:hover { border-color: var(--slate-300); background: var(--slate-50); }
+.btn-green { color: var(--green-600); }
+.btn-primary { background: var(--blue-600); color: #fff; border-color: var(--blue-600); font-weight: 600; padding: 10px 24px; font-size: 14px; }
+.btn-primary:hover { background: var(--blue-500); }
+.btn-primary:disabled { background: var(--slate-300); border-color: var(--slate-300); cursor: wait; }
+
+/* ── INPUT GRID ── */
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.input-grid label { font-size: 11px; font-weight: 600; color: var(--slate-500); text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 4px; }
+.input-grid input { width: 100%; padding: 9px 13px; border-radius: 8px; border: 1.5px solid var(--slate-200); font-size: 14px; font-family: var(--font-body); background: #fff; color: var(--slate-800); outline: none; transition: border var(--transition); }
+.input-grid input:focus { border-color: var(--blue-500); }
+
+/* ── GAUGE ── */
+.gauge { background: linear-gradient(135deg, var(--slate-900) 0%, #1a2744 100%); border-radius: 16px; padding: 26px 30px; color: #fff; margin-bottom: 24px; }
+.gauge-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.gauge-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: .5; margin-bottom: 5px; }
+.gauge-value { font-size: 26px; font-weight: 700; }
+.gauge-stats { display: flex; gap: 24px; }
+.gauge-stat { text-align: center; min-width: 56px; }
+.gauge-stat-num { font-size: 22px; font-weight: 700; }
+.gauge-stat-label { font-size: 10px; opacity: .45; margin-top: 2px; }
+.gauge-bar { margin-top: 18px; height: 7px; border-radius: 4px; background: rgba(255,255,255,.1); overflow: hidden; display: flex; }
+.gauge-bar div { transition: width .5s ease; }
+
+/* ── AREA ACCORDION ── */
+.area { margin-bottom: 10px; border-radius: var(--radius); border: 1px solid var(--slate-200); overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); }
+.area-header { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background var(--transition); }
+.area-header:hover { background: var(--slate-50); }
+.area-left { display: flex; align-items: center; gap: 10px; }
+.area-icon { font-size: 20px; }
+.area-name { font-weight: 600; font-size: 15px; color: var(--slate-900); }
+.area-progress { font-size: 12px; color: var(--slate-400); margin-top: 1px; }
+.area-right { display: flex; align-items: center; gap: 10px; }
+.area-chevron { color: var(--slate-400); font-size: 18px; transition: transform var(--transition); }
+.area-chevron.open { transform: rotate(180deg); }
+.area-body { padding: 4px 18px 18px; }
+
+/* ── CONTROL CARD ── */
+.ctrl { padding: 12px 14px; border-radius: 8px; border: 1px solid var(--slate-100); margin-bottom: 7px; transition: all var(--transition); }
+.ctrl.active-green { border-color: var(--green-200); background: rgba(240,253,244,.45); }
+.ctrl.active-yellow { border-color: var(--yellow-200); background: rgba(254,252,232,.45); }
+.ctrl.active-red { border-color: var(--red-200); background: rgba(254,242,242,.45); }
+.ctrl-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.ctrl-info { flex: 1; min-width: 200px; }
+.ctrl-meta { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.ctrl-cis { font-family: var(--font-mono); font-size: 11px; color: var(--slate-400); background: var(--slate-100); padding: 1px 6px; border-radius: 4px; }
+.ctrl-sev { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
+.ctrl-sev.critical { color: var(--red-600); }
+.ctrl-sev.high { color: var(--yellow-600); }
+.ctrl-title { font-weight: 600; font-size: 14px; color: var(--slate-800); margin-bottom: 2px; }
+.ctrl-desc { font-size: 12px; color: var(--slate-500); line-height: 1.5; }
+.ctrl-note-display { margin-top: 6px; font-size: 12px; color: var(--indigo-500); font-style: italic; background: var(--indigo-50); padding: 4px 8px; border-radius: 6px; }
+.ctrl-actions { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
+
+/* ── STATUS TOGGLE BUTTONS ── */
+.status-btn { padding: 5px 12px; border-radius: 7px; border: 1.5px solid var(--slate-200); background: transparent; color: var(--slate-400); font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--font-body); transition: all var(--transition); }
+.status-btn:hover { border-color: var(--slate-300); }
+.status-btn.on-green { border-color: var(--green-500); background: var(--green-50); color: var(--green-700); font-weight: 600; }
+.status-btn.on-yellow { border-color: var(--yellow-500); background: var(--yellow-50); color: var(--yellow-600); font-weight: 600; }
+.status-btn.on-red { border-color: var(--red-500); background: var(--red-50); color: var(--red-700); font-weight: 600; }
+.note-btn { padding: 5px 9px; border-radius: 7px; border: 1.5px solid var(--slate-200); background: transparent; cursor: pointer; font-size: 13px; color: var(--slate-400); transition: all var(--transition); }
+.note-btn.has-note { background: var(--indigo-50); border-color: var(--indigo-500); color: var(--indigo-500); }
+.note-textarea { width: 100%; margin-top: 10px; padding: 8px 12px; border-radius: 8px; border: 1.5px solid var(--slate-200); font-size: 13px; font-family: var(--font-body); resize: vertical; outline: none; color: var(--slate-700); }
+.note-textarea:focus { border-color: var(--blue-500); }
+
+/* ── BADGE ── */
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-green { background: var(--green-100); color: var(--green-700); }
+.badge-yellow { background: var(--yellow-100); color: var(--yellow-600); }
+.badge-red { background: var(--red-100); color: var(--red-700); }
+
+/* ── EXPORT BAR ── */
+.export-bar { margin-top: 28px; padding: 20px 24px; border-radius: 14px; background: linear-gradient(135deg, var(--slate-900), #1a2744); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.export-bar-text { color: #fff; }
+.export-bar-title { font-weight: 600; font-size: 15px; }
+.export-bar-sub { font-size: 12px; opacity: .5; margin-top: 3px; }
+
+/* ── REPORT VIEW (overlay) ── */
+.report-overlay { position: fixed; inset: 0; z-index: 1000; background: var(--slate-100); overflow-y: auto; }
+.report-toolbar { position: sticky; top: 0; z-index: 10; background: var(--slate-900); color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.report-toolbar .btn { color: #fff; border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.08); }
+.report-toolbar .btn:hover { background: rgba(255,255,255,.15); }
+.report-container { max-width: 820px; margin: 24px auto; background: #fff; box-shadow: 0 2px 24px rgba(0,0,0,.1); border-radius: 4px; }
+
+/* ── PRINT REPORT STYLES ── */
+.report-page { padding: 52px 56px; position: relative; }
+.report-page + .report-page { border-top: none; }
+.report-header-bar { height: 4px; background: linear-gradient(90deg, var(--slate-900) 0%, var(--blue-500) 50%, var(--slate-900) 100%); margin: -52px -56px 28px; }
+.report h1 { font-size: 26px; font-weight: 700; color: var(--slate-900); letter-spacing: -.3px; }
+.report h2 { font-size: 19px; font-weight: 600; color: var(--slate-900); margin-bottom: 14px; padding-bottom: 7px; border-bottom: 2px solid var(--slate-200); }
+.report h3 { font-size: 15px; font-weight: 600; color: var(--slate-700); margin: 14px 0 7px; }
+.report .subtitle { font-size: 13px; color: var(--slate-500); margin-bottom: 20px; }
+.report table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+.report th { background: var(--slate-50); text-align: left; padding: 9px 13px; font-size: 11px; font-weight: 600; color: var(--slate-500); text-transform: uppercase; letter-spacing: .5px; border-bottom: 2px solid var(--slate-200); }
+.report td { padding: 9px 13px; border-bottom: 1px solid var(--slate-100); font-size: 13px; vertical-align: top; }
+.report tr:nth-child(even) { background: #fafbfc; }
+.report .risk-box { padding: 18px 22px; border-radius: 12px; margin: 14px 0; display: flex; align-items: center; gap: 14px; }
+.report .risk-green { background: var(--green-50); border: 1.5px solid var(--green-200); }
+.report .risk-yellow { background: var(--yellow-50); border: 1.5px solid var(--yellow-200); }
+.report .risk-red { background: var(--red-50); border: 1.5px solid var(--red-200); }
+.report .risk-label { font-size: 20px; font-weight: 700; }
+.report .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin: 14px 0; }
+.report .stat-card { background: var(--slate-50); border-radius: 8px; padding: 14px; text-align: center; }
+.report .stat-number { font-size: 26px; font-weight: 700; }
+.report .stat-sub { font-size: 10px; color: var(--slate-500); margin-top: 3px; }
+.report .finding { padding: 11px 15px; border-left: 4px solid var(--red-500); background: var(--red-50); border-radius: 0 8px 8px 0; margin: 7px 0; }
+.report .finding-yellow { border-left-color: var(--yellow-500); background: var(--yellow-50); }
+.report .finding-title { font-weight: 600; font-size: 13px; margin-bottom: 3px; }
+.report .finding-desc { font-size: 12px; color: var(--slate-500); }
+.report .finding-note { font-size: 11px; color: var(--indigo-500); font-style: italic; margin-top: 3px; }
+.report .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.report .scope-box { border-radius: 8px; padding: 16px; }
+.report .scope-box ul { font-size: 13px; color: var(--slate-600); padding-left: 20px; line-height: 1.8; }
+.report .footer-line { display: flex; justify-content: space-between; font-size: 10px; color: var(--slate-400); border-top: 1px solid var(--slate-200); padding-top: 10px; margin-top: 32px; }
+.report .cta-box { margin-top: 36px; padding: 20px; background: linear-gradient(135deg, var(--slate-900), #1a2744); border-radius: 12px; color: #fff; }
+
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  body { background: #fff !important; margin: 0; padding: 0; }
+  .app { display: none !important; }
+  .report-toolbar { display: none !important; }
+  .report-overlay { position: static !important; overflow: visible !important; background: #fff !important; }
+  .report-container { box-shadow: none !important; margin: 0 !important; max-width: none !important; border-radius: 0 !important; }
+  .report-page { page-break-after: always !important; break-after: page !important; min-height: auto; padding: 40px 48px; page-break-inside: avoid; }
+  .report-page:last-child { page-break-after: auto !important; break-after: auto !important; }
+  .report-header-bar { -webkit-print-color-adjust: exact; }
+  .risk-box, .stat-card, .finding, .finding-yellow, .scope-box, .cta-box, .badge { -webkit-print-color-adjust: exact; }
+  table { page-break-inside: avoid; }
+  .finding { page-break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .input-grid { grid-template-columns: 1fr; }
+  .ctrl-top { flex-direction: column; }
+  .ctrl-actions { flex-wrap: wrap; }
+  .gauge-stats { gap: 14px; }
+  .report .stat-grid { grid-template-columns: 1fr 1fr; }
+  .report .scope-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// DATA
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const AREAS = [
+  { id:"identity", name:"Identità & Accessi", icon:"🔐", controls:[
+    {id:"C01",cis:"1.1.1",title:"Account amministrativi cloud-only",desc:"Gli account admin devono essere cloud-only, non sincronizzati da AD on-prem",severity:"critical"},
+    {id:"C02",cis:"1.1.2",title:"Account di emergenza (break-glass)",desc:"Devono esistere almeno 2 account di emergenza per accesso al tenant",severity:"critical"},
+    {id:"C03",cis:"1.1.3",title:"Numero di Global Admin (2-4)",desc:"Il numero di Global Admin deve essere compreso tra 2 e 4",severity:"critical"},
+    {id:"C04",cis:"5.2.2.1",title:"MFA per tutti i ruoli amministrativi",desc:"Autenticazione multi-fattore obbligatoria per tutti gli utenti con ruoli admin",severity:"critical"},
+    {id:"C05",cis:"5.2.2.2",title:"MFA per tutti gli utenti",desc:"Autenticazione multi-fattore abilitata per tutti gli utenti del tenant",severity:"critical"},
+    {id:"C06",cis:"5.2.2.3",title:"Blocco autenticazione legacy",desc:"Policy di Conditional Access per bloccare i protocolli di autenticazione legacy",severity:"high"},
+    {id:"C07",cis:"5.2.3.1",title:"Protezione MFA fatigue (number matching)",desc:"Microsoft Authenticator configurato con number matching contro attacchi MFA fatigue",severity:"high"},
+    {id:"C08",cis:"5.3.4",title:"Approvazione per attivazione Global Admin",desc:"L'attivazione del ruolo Global Admin richiede approvazione (PIM)",severity:"high"},
+  ]},
+  { id:"email", name:"Sicurezza Email", icon:"📧", controls:[
+    {id:"C09",cis:"2.1.2",title:"Filtro allegati comuni pericolosi",desc:"Il filtro per tipi di allegati comunemente utilizzati per malware è abilitato",severity:"critical"},
+    {id:"C10",cis:"2.1.8",title:"Record SPF pubblicati",desc:"Record SPF configurati per tutti i domini Exchange Online",severity:"high"},
+    {id:"C11",cis:"2.1.9",title:"DKIM abilitato",desc:"DKIM abilitato per tutti i domini Exchange Online",severity:"high"},
+    {id:"C12",cis:"2.1.10",title:"Record DMARC pubblicati",desc:"Record DMARC pubblicati per tutti i domini Exchange con policy di enforcement",severity:"high"},
+    {id:"C13",cis:"6.2.1",title:"Blocco mail forwarding",desc:"Tutte le forme di inoltro automatico email verso l'esterno sono bloccate",severity:"critical"},
+  ]},
+  { id:"apps", name:"Applicazioni & Accessi Esterni", icon:"🔗", controls:[
+    {id:"C14",cis:"5.1.5.1",title:"Consenso utente ad app di terze parti bloccato",desc:"Gli utenti non possono autorizzare autonomamente app di terze parti ad accedere ai dati aziendali",severity:"critical"},
+    {id:"C15",cis:"5.1.5.2",title:"Workflow di consenso admin abilitato",desc:"Flusso di approvazione amministrativa per le richieste di accesso delle app",severity:"high"},
+    {id:"C16",cis:"1.3.4",title:"App e servizi di proprietà utente limitati",desc:"La possibilità degli utenti di installare app e servizi propri è limitata",severity:"high"},
+    {id:"C17",cis:"5.1.6.2",title:"Accesso utenti guest limitato",desc:"L'accesso degli utenti guest al tenant è adeguatamente ristretto",severity:"high"},
+  ]},
+  { id:"data", name:"Dati & Condivisione", icon:"📁", controls:[
+    {id:"C18",cis:"7.2.3",title:"Condivisione esterna SharePoint limitata",desc:"La condivisione esterna di contenuti SharePoint è adeguatamente ristretta",severity:"critical"},
+    {id:"C19",cis:"7.2.7",title:"Link sharing limitato in SharePoint/OneDrive",desc:"I link di condivisione predefiniti sono impostati su 'Persone specifiche' e non 'Chiunque'",severity:"high"},
+    {id:"C20",cis:"3.2.1",title:"Policy DLP abilitate",desc:"Almeno una policy di Data Loss Prevention è configurata e attiva",severity:"critical"},
+    {id:"C21",cis:"3.2.2",title:"DLP abilitata per Microsoft Teams",desc:"Le policy DLP coprono anche le conversazioni e i file di Teams",severity:"high"},
+    {id:"C22",cis:"8.2.2",title:"Comunicazione con utenti Teams non gestiti disabilitata",desc:"La comunicazione con account Teams esterni non gestiti è disabilitata",severity:"high"},
+  ]},
+  { id:"logging", name:"Logging & Governance", icon:"📊", controls:[
+    {id:"C23",cis:"3.1.1",title:"Audit log abilitato",desc:"La ricerca nel log di audit di Microsoft 365 è abilitata",severity:"critical"},
+    {id:"C24",cis:"6.1.1",title:"Audit organizzativo Exchange non disabilitato",desc:"L'impostazione AuditDisabled a livello organizzativo è impostata su False",severity:"high"},
+    {id:"C25",cis:"6.5.4",title:"SMTP AUTH disabilitato",desc:"L'autenticazione SMTP è disabilitata per prevenire abusi di invio email",severity:"high"},
+  ]},
+];
+
+const STATUS = {
+  green:  {label:"Conforme",      color:"var(--green-600)",  bg:"var(--green-50)",  border:"var(--green-200)", emoji:"🟢"},
+  yellow: {label:"Parziale",      color:"var(--yellow-600)", bg:"var(--yellow-50)", border:"var(--yellow-200)",emoji:"🟡"},
+  red:    {label:"Non conforme",  color:"var(--red-600)",    bg:"var(--red-50)",    border:"var(--red-200)",   emoji:"🔴"},
+  gray:   {label:"Non valutato",  color:"var(--slate-400)",  bg:"var(--slate-50)",  border:"var(--slate-200)", emoji:"⚪"},
+};
+
+const SEV = {critical:"Critico", high:"Alto"};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// STATE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let state = {
+  results: {},
+  notes: {},
+  clientName: "",
+  assessDate: new Date().toISOString().split("T")[0],
+  expandedArea: "identity",
+  noteOpen: null,
+  showReport: false,
+};
+
+function save() { try { localStorage.setItem("m365_state", JSON.stringify(state)); } catch(e){} }
+function load() { try { const s = localStorage.getItem("m365_state"); if(s) { const p = JSON.parse(s); Object.assign(state, p); state.showReport = false; } } catch(e){} }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SCORING
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function getAreaScore(controls) {
+  const ev = controls.filter(c => state.results[c.id] && state.results[c.id] !== "gray");
+  if(!ev.length) return null;
+  const r = ev.filter(c => state.results[c.id]==="red").length;
+  const g = ev.filter(c => state.results[c.id]==="green").length;
+  if(r > ev.length*.4 || ev.some(c => c.severity==="critical" && state.results[c.id]==="red")) return "red";
+  if(g >= ev.length*.7) return "green";
+  return "yellow";
+}
+
+function getOverall() {
+  const all = AREAS.flatMap(a=>a.controls);
+  const ev = all.filter(c => state.results[c.id] && state.results[c.id]!=="gray");
+  if(!ev.length) return null;
+  const g = ev.filter(c=>state.results[c.id]==="green").length;
+  const r = ev.filter(c=>state.results[c.id]==="red").length;
+  const pct = g/ev.length;
+  if(r===0 && pct>=.85) return {level:"green",label:"BASSO RISCHIO"};
+  if(pct>=.5 && r<=ev.length*.3) return {level:"yellow",label:"MEDIO RISCHIO"};
+  return {level:"red",label:"ALTO RISCHIO"};
+}
+
+function counts() {
+  const all = AREAS.flatMap(a=>a.controls);
+  return {
+    total: all.length,
+    evaluated: all.filter(c=>state.results[c.id]&&state.results[c.id]!=="gray").length,
+    green: all.filter(c=>state.results[c.id]==="green").length,
+    yellow: all.filter(c=>state.results[c.id]==="yellow").length,
+    red: all.filter(c=>state.results[c.id]==="red").length,
+  };
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RENDER — ASSESSMENT VIEW
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function render() {
+  const c = counts();
+  const overall = getOverall();
+
+  const gaugeColor = lev => lev==="green"?"var(--green-500)":lev==="yellow"?"var(--yellow-500)":"#f87171";
+
+  let html = `
+  <div class="app">
+    <div class="app-header">
+      <div>
+        <div class="app-title">M365 Security Assessment</div>
+        <div class="app-subtitle">25 controlli CIS Benchmark v6.0.1 — Semaforo di conformità</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-green" onclick="setAll('green')">✓ Tutti verdi</button>
+        <button class="btn" onclick="setAll('gray')">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="input-grid">
+      <div><label>Nome cliente</label><input type="text" value="${esc(state.clientName)}" placeholder="Es. Acme S.r.l." oninput="state.clientName=this.value;save()"></div>
+      <div><label>Data assessment</label><input type="date" value="${state.assessDate}" oninput="state.assessDate=this.value;save()"></div>
+    </div>
+
+    <div class="gauge">
+      <div class="gauge-top">
+        <div>
+          <div class="gauge-label">Livello complessivo di rischio</div>
+          <div class="gauge-value">${overall ? `<span style="color:${gaugeColor(overall.level)}">${overall.label}</span>` : '<span style="opacity:.35">In attesa di valutazione</span>'}</div>
+        </div>
+        <div class="gauge-stats">
+          <div class="gauge-stat"><div class="gauge-stat-num" style="color:var(--green-500)">${c.green}</div><div class="gauge-stat-label">Conformi</div></div>
+          <div class="gauge-stat"><div class="gauge-stat-num" style="color:var(--yellow-500)">${c.yellow}</div><div class="gauge-stat-label">Parziali</div></div>
+          <div class="gauge-stat"><div class="gauge-stat-num" style="color:#f87171">${c.red}</div><div class="gauge-stat-label">Non conformi</div></div>
+          <div class="gauge-stat"><div class="gauge-stat-num" style="color:var(--slate-400)">${c.evaluated}<span style="font-size:12px;opacity:.5">/${c.total}</span></div><div class="gauge-stat-label">Valutati</div></div>
+        </div>
+      </div>
+      <div class="gauge-bar">
+        <div style="width:${(c.green/c.total*100)}%;background:var(--green-500)"></div>
+        <div style="width:${(c.yellow/c.total*100)}%;background:var(--yellow-500)"></div>
+        <div style="width:${(c.red/c.total*100)}%;background:#f87171"></div>
+      </div>
+    </div>`;
+
+  // Areas
+  for(const area of AREAS) {
+    const score = getAreaScore(area.controls);
+    const done = area.controls.filter(c=>state.results[c.id]&&state.results[c.id]!=="gray").length;
+    const isOpen = state.expandedArea === area.id;
+    const badgeHtml = score ? `<span class="badge badge-${score}">${STATUS[score].emoji} ${score==="green"?"Adeguata":score==="yellow"?"Migliorabile":"Critico"}</span>` : '<span style="font-size:12px;color:var(--slate-400)">–</span>';
+
+    html += `<div class="area">
+      <div class="area-header" onclick="toggleArea('${area.id}')">
+        <div class="area-left">
+          <span class="area-icon">${area.icon}</span>
+          <div><div class="area-name">${area.name}</div><div class="area-progress">${done}/${area.controls.length} valutati</div></div>
+        </div>
+        <div class="area-right">${badgeHtml}<span class="area-chevron ${isOpen?'open':''}">▾</span></div>
+      </div>`;
+
+    if(isOpen) {
+      html += '<div class="area-body">';
+      for(const ctrl of area.controls) {
+        const st = state.results[ctrl.id] || "gray";
+        const activeClass = st!=="gray" ? `active-${st}` : "";
+        html += `<div class="ctrl ${activeClass}">
+          <div class="ctrl-top">
+            <div class="ctrl-info">
+              <div class="ctrl-meta">
+                <span class="ctrl-cis">${ctrl.cis}</span>
+                <span class="ctrl-sev ${ctrl.severity}">${SEV[ctrl.severity]}</span>
+              </div>
+              <div class="ctrl-title">${ctrl.title}</div>
+              <div class="ctrl-desc">${ctrl.desc}</div>
+              ${state.notes[ctrl.id] ? `<div class="ctrl-note-display">${esc(state.notes[ctrl.id])}</div>` : ''}
+            </div>
+            <div class="ctrl-actions">
+              ${["green","yellow","red"].map(s => `<button class="status-btn ${st===s?'on-'+s:''}" onclick="setStatus('${ctrl.id}','${s}')">${STATUS[s].emoji} ${STATUS[s].label}</button>`).join('')}
+              <button class="note-btn ${state.notes[ctrl.id]?'has-note':''}" onclick="toggleNote('${ctrl.id}')" title="Aggiungi nota">✎</button>
+            </div>
+          </div>
+          ${state.noteOpen===ctrl.id ? `<textarea class="note-textarea" rows="2" placeholder="Nota per il report..." oninput="state.notes['${ctrl.id}']=this.value;save()">${esc(state.notes[ctrl.id]||'')}</textarea>` : ''}
+        </div>`;
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+
+  // Export bar
+  html += `
+    <div class="export-bar">
+      <div class="export-bar-text">
+        <div class="export-bar-title">Genera report per il cliente</div>
+        <div class="export-bar-sub">Report a 4 pagine — usa Ctrl+P per salvare come PDF</div>
+      </div>
+      <button class="btn btn-primary" onclick="showReport()">📄 Visualizza Report</button>
+    </div>
+  </div>`;
+
+  document.getElementById("app").innerHTML = html;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RENDER — REPORT VIEW
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderReport() {
+  const c = counts();
+  const overall = getOverall();
+  const critFindings = AREAS.flatMap(a=>a.controls.filter(x=>state.results[x.id]==="red")).slice(0,5);
+  const yellowFindings = AREAS.flatMap(a=>a.controls.filter(x=>state.results[x.id]==="yellow")).slice(0,5);
+  const client = state.clientName || "[Nome Cliente]";
+  const date = state.assessDate || new Date().toLocaleDateString("it-IT");
+
+  const riskClass = overall ? "risk-"+overall.level : "risk-yellow";
+  const riskEmoji = overall ? STATUS[overall.level].emoji : "⚪";
+  const riskLabel = overall ? overall.label : "NON VALUTATO";
+  const riskColor = overall ? STATUS[overall.level].color : "var(--slate-400)";
+
+  let html = `
+  <div class="report-overlay">
+    <div class="report-toolbar">
+      <div style="font-weight:600;font-size:14px">Anteprima Report — ${esc(client)}</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="downloadReportHTML()">⬇ Scarica HTML</button>
+        <button class="btn" onclick="printReport()">🖨 Stampa PDF</button>
+        <button class="btn" onclick="closeReport()">✕ Chiudi</button>
+      </div>
+    </div>
+
+    <div class="report-container report">
+
+      <!-- PAGE 1 -->
+      <div class="report-page">
+        <div class="report-header-bar"></div>
+        <h1>Microsoft 365 — Executive Security Assessment</h1>
+        <p class="subtitle">Valutazione sintetica dello stato di sicurezza del tenant</p>
+        <table style="width:auto;margin:20px 0">
+          <tr><td style="font-weight:600;padding-right:32px;border:none">Cliente</td><td style="border:none">${esc(client)}</td></tr>
+          <tr><td style="font-weight:600;padding-right:32px;border:none">Data</td><td style="border:none">${date}</td></tr>
+          <tr><td style="font-weight:600;padding-right:32px;border:none">A cura di</td><td style="border:none">Lanpartners</td></tr>
+        </table>
+
+        <h2>Executive Summary</h2>
+        <p style="font-size:13px;color:var(--slate-600);margin-bottom:14px">
+          Questa valutazione fornisce una visione sintetica dello stato di sicurezza del tenant Microsoft 365,
+          evidenziando le principali aree di rischio basate su <strong>${c.evaluated}</strong> controlli valutati su 25 totali,
+          mappati sul CIS Microsoft 365 Foundations Benchmark v6.0.1.
+        </p>
+
+        <div class="risk-box ${riskClass}">
+          <span style="font-size:30px">${riskEmoji}</span>
+          <div>
+            <div style="font-size:11px;color:var(--slate-500);text-transform:uppercase;letter-spacing:1px">Livello complessivo</div>
+            <div class="risk-label" style="color:${riskColor}">${riskLabel}</div>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-number" style="color:var(--green-600)">${c.green}</div><div class="stat-sub">Conformi</div></div>
+          <div class="stat-card"><div class="stat-number" style="color:var(--yellow-600)">${c.yellow}</div><div class="stat-sub">Parziali</div></div>
+          <div class="stat-card"><div class="stat-number" style="color:var(--red-600)">${c.red}</div><div class="stat-sub">Non conformi</div></div>
+          <div class="stat-card"><div class="stat-number" style="color:var(--blue-600)">${c.evaluated}<span style="font-size:13px;color:var(--slate-400)">/${c.total}</span></div><div class="stat-sub">Valutati</div></div>
+        </div>
+
+        <h3>Panoramica per area</h3>
+        <table>
+          <thead><tr><th>Area</th><th>Controlli</th><th>Stato</th></tr></thead>
+          <tbody>${AREAS.map(a => {
+            const s = getAreaScore(a.controls);
+            const d = a.controls.filter(x=>state.results[x.id]&&state.results[x.id]!=="gray").length;
+            const badgeLabel = s==="green"?"Adeguata":s==="yellow"?"Migliorabile":s==="red"?"Critico":"–";
+            const badgeCls = s ? `badge badge-${s}` : "";
+            return `<tr><td>${a.icon} ${a.name}</td><td>${d}/${a.controls.length}</td><td><span class="${badgeCls}">${s?STATUS[s].emoji:''} ${badgeLabel}</span></td></tr>`;
+          }).join('')}</tbody>
+        </table>
+        <div class="footer-line"><span>Documento confidenziale</span><span>Pagina 1 / 4</span></div>
+      </div>
+
+      <!-- PAGE 2 -->
+      <div class="report-page">
+        <div class="report-header-bar"></div>
+        <h2>Dettaglio controlli per area</h2>
+        ${AREAS.map(a => `
+          <h3>${a.icon} ${a.name}</h3>
+          <table>
+            <thead><tr><th>CIS</th><th>Controllo</th><th>Priorità</th><th>Stato</th></tr></thead>
+            <tbody>${a.controls.map(ctrl => {
+              const st = state.results[ctrl.id] || "gray";
+              const badgeCls = st!=="gray" ? `badge badge-${st}` : "badge";
+              return `<tr>
+                <td style="font-family:var(--font-mono);font-size:12px">${ctrl.cis}</td>
+                <td>${ctrl.title}${state.notes[ctrl.id]?`<div style="font-size:11px;color:var(--indigo-500);font-style:italic;margin-top:2px">Nota: ${esc(state.notes[ctrl.id])}</div>`:''}</td>
+                <td><span class="ctrl-sev ${ctrl.severity}" style="font-size:11px">${SEV[ctrl.severity]}</span></td>
+                <td><span class="${badgeCls}">${STATUS[st].emoji} ${STATUS[st].label}</span></td>
+              </tr>`;
+            }).join('')}</tbody>
+          </table>
+        `).join('')}
+        <div class="footer-line"><span>Documento confidenziale</span><span>Pagina 2 / 4</span></div>
+      </div>
+
+      <!-- PAGE 3 -->
+      <div class="report-page">
+        <div class="report-header-bar"></div>
+        <h2>Criticità e raccomandazioni</h2>
+        ${critFindings.length ? `<h3>Criticità principali</h3>${critFindings.map(cf => `
+          <div class="finding">
+            <div class="finding-title">${cf.title} <span style="font-size:11px;color:var(--slate-400)">(CIS ${cf.cis})</span></div>
+            <div class="finding-desc">${cf.desc}</div>
+            ${state.notes[cf.id]?`<div class="finding-note">Nota: ${esc(state.notes[cf.id])}</div>`:''}
+          </div>`).join('')}` : '<p style="color:var(--slate-500)">Nessuna criticità grave riscontrata.</p>'}
+
+        ${yellowFindings.length ? `<h3 style="margin-top:20px">Aree di miglioramento</h3>${yellowFindings.map(yf => `
+          <div class="finding finding-yellow">
+            <div class="finding-title">${yf.title} <span style="font-size:11px;color:var(--slate-400)">(CIS ${yf.cis})</span></div>
+            <div class="finding-desc">${yf.desc}</div>
+            ${state.notes[yf.id]?`<div class="finding-note">Nota: ${esc(state.notes[yf.id])}</div>`:''}
+          </div>`).join('')}` : ''}
+
+        <h2 style="margin-top:28px">Ambito dell'assessment</h2>
+        <div class="scope-grid">
+          <div class="scope-box" style="background:var(--green-50)">
+            <h3 style="color:var(--green-700);margin:0 0 6px">Incluso</h3>
+            <ul><li>Configurazioni di sicurezza di Microsoft 365</li><li>25 controlli critici CIS Benchmark v6.0.1</li><li>Analisi non invasiva e read-only</li><li>Mappatura su 5 aree di rischio</li></ul>
+          </div>
+          <div class="scope-box" style="background:var(--red-50)">
+            <h3 style="color:var(--red-700);margin:0 0 6px">Escluso</h3>
+            <ul><li>Attività di remediation</li><li>Hardening tecnico</li><li>Incident response / Analisi forense</li><li>Test di intrusione</li></ul>
+          </div>
+        </div>
+        <div class="footer-line"><span>Documento confidenziale</span><span>Pagina 3 / 4</span></div>
+      </div>
+
+      <!-- PAGE 4 -->
+      <div class="report-page">
+        <div class="report-header-bar"></div>
+        <h2>Conclusioni e prossimi passi</h2>
+        <p style="font-size:13px;color:var(--slate-600);line-height:1.8;margin-bottom:18px">
+          Il tenant Microsoft 365 del cliente <strong>${esc(client)}</strong> presenta
+          ${c.red>5?"significative criticità che richiedono intervento immediato":c.red>2?"alcune criticità che richiedono attenzione":c.red>0?"limitate criticità puntuali":"un livello di conformità adeguato"}.
+          Su ${c.evaluated} controlli valutati, ${c.green} risultano conformi (${c.evaluated>0?Math.round(c.green/c.evaluated*100):0}%).
+          ${c.red>0?"Le non conformità riscontrate, se non affrontate, aumentano sensibilmente la probabilità di un incidente di sicurezza.":""}
+        </p>
+        <h3>Prossimi passi consigliati</h3>
+        <div style="background:var(--slate-50);border-radius:8px;padding:16px;margin:10px 0">
+          <ol style="font-size:13px;color:var(--slate-600);padding-left:20px;line-height:2.1">
+            <li>Definizione di una <strong>roadmap di sicurezza</strong> prioritizzata</li>
+            <li>Interventi di <strong>hardening</strong> sulle aree critiche identificate</li>
+            <li>Implementazione di <strong>MFA e Conditional Access</strong> dove mancanti</li>
+            <li>Revisione delle <strong>policy di condivisione</strong> e accesso esterno</li>
+            <li>Attivazione di <strong>logging e monitoraggio</strong> avanzato</li>
+          </ol>
+        </div>
+        <p style="font-size:11px;color:var(--slate-400);font-style:italic;margin-top:20px">
+          Le attività di remediation e messa in sicurezza possono essere valutate separatamente come servizio professionale.
+          Questo documento ha finalità informative e decisionali e non costituisce una certificazione di sicurezza.
+        </p>
+        <div class="cta-box">
+          <div style="font-size:18px;font-weight:700;margin-bottom:6px">Lanpartners</div>
+          <div style="font-size:12px;opacity:.65;line-height:1.8">Piazza Città di Lombardia 1, Milan, Italy<br>Tel +39 02 8715 9755 | lanpartners.com</div>
+        </div>
+        <div class="footer-line"><span>Documento confidenziale</span><span>Pagina 4 / 4</span></div>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById("app").innerHTML = html;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ACTIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function esc(s) { if(!s) return ""; return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function setStatus(id, s) {
+  state.results[id] = state.results[id]===s ? "gray" : s;
+  save(); render();
+}
+function setAll(s) {
+  AREAS.forEach(a=>a.controls.forEach(c=>state.results[c.id]=s));
+  save(); render();
+}
+function toggleArea(id) {
+  state.expandedArea = state.expandedArea===id ? null : id;
+  render();
+}
+function toggleNote(id) {
+  state.noteOpen = state.noteOpen===id ? null : id;
+  render();
+}
+function showReport() {
+  state.showReport = true;
+  renderReport();
+}
+function closeReport() {
+  state.showReport = false;
+  render();
+}
+function printReport() {
+  const reportEl = document.querySelector('.report-container');
+  if (!reportEl) return;
+  const styles = document.querySelector('style').textContent;
+  const fontLink = '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">';
+
+  const printHTML = '<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8">' + fontLink +
+    '<style>' + styles + `
+    body { background: #fff !important; margin: 0; padding: 0; }
+    .report-overlay, .report-toolbar { display: none !important; }
+    .report-container { box-shadow: none; margin: 0; max-width: none; border-radius: 0; }
+    .report-page { page-break-after: always; break-after: page; padding: 40px 48px; }
+    .report-page:last-child { page-break-after: auto; break-after: auto; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    table, .finding { page-break-inside: avoid; }
+    </style></head><body>` + reportEl.outerHTML + '<script>window.onload=function(){window.print();}<\/script></body></html>';
+
+  const w = window.open('', '_blank');
+  if (w) {
+    w.document.write(printHTML);
+    w.document.close();
+  } else {
+    alert('Il browser ha bloccato il popup. Consenti i popup per questo sito e riprova.');
+  }
+}
+
+function downloadReportHTML() {
+  // Build a standalone HTML file from the report content
+  const reportEl = document.querySelector('.report-container');
+  if (!reportEl) return;
+
+  const styles = document.querySelector('style').textContent;
+  const fontLink = '<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">';
+  const client = state.clientName || "Cliente";
+  const date = state.assessDate || "";
+
+  const fullHTML = `<!DOCTYPE html>
+<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>M365 Security Assessment - ${client}</title>
+${fontLink}
+<style>${styles}
+body { background: #fff; }
+.report-overlay { position: static; overflow: visible; background: #fff; }
+.report-container { max-width: 820px; margin: 0 auto; box-shadow: none; }
+</style></head><body>
+<div style="text-align:center;padding:12px;background:#0f172a;color:#fff;" class="no-print">
+  <button onclick="window.print()" style="padding:10px 28px;border-radius:8px;border:none;background:#3b82f6;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif">🖨 Stampa / Salva come PDF</button>
+</div>
+${reportEl.outerHTML}
+</body></html>`;
+
+  const blob = new Blob([fullHTML], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "M365_Security_Assessment_" + client.replace(/\\s+/g, "_") + "_" + date + ".html";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// INIT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+load();
+render();
+</script>
+</body>
+</html>
